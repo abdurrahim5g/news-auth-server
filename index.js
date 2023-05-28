@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const port = 5000;
+
+app.use(cors());
 
 const news = require("./data/news.json");
 const categories = require("./data/categories.json");
@@ -25,6 +28,14 @@ app.get("/news/:id", (req, res) => {
 // api for categories
 app.get("/categories", (req, res) => {
   res.send(categories);
+});
+
+// api for single categorie
+app.get("/categories/:id", (req, res) => {
+  const categoryId = req.params.id;
+  const singleCategoryNews =
+    news.filter((n) => n.category_id === categoryId) || [];
+  res.send(singleCategoryNews);
 });
 
 app.listen(port, () => {
